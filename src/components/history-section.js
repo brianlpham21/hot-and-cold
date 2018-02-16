@@ -1,4 +1,5 @@
 import React from 'react';
+import './history-section.css';
 
 export default function HistorySection(props) {
   const pastGuesses = props.guesses.map((guess, index) =>

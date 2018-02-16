@@ -9,23 +9,58 @@ export default class Layout extends React.Component {
     this.state = {
       correctAnswer: Math.floor(Math.random() * 100 + 1),
       guesses: [],
-      feedback: '',
+      feedback: 'Hot or Cold?',
       guess: ''
     };
   }
 
-  onGuess(guess) {
+  handleGuess(guess) {
+    let feedback;
+
+    if (!guess) {
+      feedback = "Please enter a valid number!";
+
+      this.setState({
+        feedback
+      });
+
+      return;
+    }
+
+    if ((this.state.guesses).includes(guess)) {
+      feedback = "Already guessed!";
+
+      this.setState({
+        feedback
+      });
+
+      return;
+    }
+
+    if (Number(guess) === this.state.correctAnswer) {
+      feedback = `Correct! You got it! It was ${this.state.correctAnswer}!`;
+
+      this.setState({
+        feedback,
+        guess
+      });
+
+      return;
+    }
+
     const difference = (Math.abs(this.state.correctAnswer - guess));
 
-    let feedback;
-    if (difference === 0) {
-      feedback = "That's the Number!"
+    if (difference > 20) {
+      feedback = "You're Ice Cold";
     }
-    else if (difference > 20) {
-      feedback = "You're Cold"
+    else if (difference > 10) {
+      feedback = "You're Warmer";
+    }
+    else if (difference > 5) {
+      feedback = "You're Hot";
     }
     else {
-      feedback = "You're Hot"
+      feedback = "You're on Fire";
     }
 
     this.setState({
@@ -36,10 +71,12 @@ export default class Layout extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <main>
-        <GuessSection onGuess={guess => this.onGuess(guess)} />
-        <FeedbackSection correctAnswer={this.state.correctAnswer} currentGuess={this.state.guess} feedback={this.state.feedback} />
+        <GuessSection onGuess={guess => this.handleGuess(guess)} />
+        <FeedbackSection
+          currentGuess={this.state.guess}
+          feedback={this.state.feedback} />
         <HistorySection guesses={this.state.guesses} />
       </main>
     )
