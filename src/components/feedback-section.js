@@ -6,7 +6,7 @@ export default function FeedbackSection(props) {
   return (
     <div>
       <h1>{props.feedback}</h1>
-      <p>Current Guess: {current}</p>
+      <p>Your Current Guess: {current}</p>
     </div>
   )
 }
